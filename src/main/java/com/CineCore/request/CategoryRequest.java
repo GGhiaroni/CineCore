@@ -1,4 +1,4 @@
 package com.CineCore.request;
 
-public class CategoryRequest {
+public record CategoryRequest (String name){
 }
