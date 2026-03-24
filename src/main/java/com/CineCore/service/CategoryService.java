@@ -1,8 +1,18 @@
 package com.CineCore.service;
 
+import com.CineCore.entity.Category;
+import com.CineCore.repository.CategoryRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-@Service
-public class CategoryService {
+import java.util.List;
 
+@Service
+@RequiredArgsConstructor
+public class CategoryService {
+    private final CategoryRepository categoryRepository;
+
+    public List<Category> getAllCategories(){
+        return categoryRepository.findAll();
+    }
 }
