@@ -3,8 +3,10 @@ package com.CineCore.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+
 @Entity
 @Table(name = "category")
+@Builder
 @Getter
 @Setter
 @NoArgsConstructor
