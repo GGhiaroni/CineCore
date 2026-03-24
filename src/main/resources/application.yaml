@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: CineCore
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/CineCore
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+
+  flyway:
+    enabled: true
+
