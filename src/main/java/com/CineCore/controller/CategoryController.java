@@ -6,6 +6,8 @@ import com.CineCore.request.CategoryRequest;
 import com.CineCore.response.CategoryResponse;
 import com.CineCore.service.CategoryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,36 +20,45 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @GetMapping
-    public List<CategoryResponse> getAllCategories() {
+    public ResponseEntity<?> getAllCategories() {
         List<Category> categories = categoryService.getAllCategories();
-        return categories.stream()
-                .map(CategoryMapper::toCategoryResponse)
-                .toList();
+        if(categories != null) {
+            List<CategoryResponse> categoriesResponseList = categories.stream()
+                    .map(CategoryMapper::toCategoryResponse)
+                    .toList();
+            return ResponseEntity.ok(categoriesResponseList);
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Nenhuma categoria foi encontrada.");
     }
 
     @PostMapping
-    public CategoryResponse saveCategory(@RequestBody CategoryRequest category) {
+    public ResponseEntity<CategoryResponse> saveCategory(@RequestBody CategoryRequest category) {
         Category categoryMapped = CategoryMapper.toCategory(category);
         Category categorySaved = categoryService.saveCategory(categoryMapped);
-        return CategoryMapper.toCategoryResponse(categorySaved);
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                CategoryMapper.toCategoryResponse(categorySaved)
+        );
     }
 
     @GetMapping("/{id}")
-    public CategoryResponse getCategoryById(@PathVariable Long id) {
+    public ResponseEntity<?> getCategoryById(@PathVariable Long id) {
         Optional<Category> categoryFounded = categoryService.getCategoryById(id);
-        if (categoryFounded.isPresent()){
-            return CategoryMapper.toCategoryResponse(categoryFounded.get());
+        if (categoryFounded.isPresent()) {
+            return ResponseEntity.ok(CategoryMapper.toCategoryResponse(categoryFounded.get()));
         }
-        return null;
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi possível "
+        + "localizar uma categoria de id " + id + ".");
     }
 
     @DeleteMapping("/{id}")
-    public String deleteCategoryById(@PathVariable Long id){
-        if(getCategoryById(id) != null){
+    public ResponseEntity<?> deleteCategoryById(@PathVariable Long id) {
+        Optional<Category> category = categoryService.getCategoryById(id);
+        if (category.isPresent()) {
             categoryService.deleteCategoryById(id);
-            return "Categoria de id " + id + " deletada com sucesso.";
+            return ResponseEntity.noContent().build();
         }
-        return "Não foi possível encontrar uma categoria com o id " + id + ".";
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi possível " +
+                "encontrar uma categoria com o id " + id + ".");
     }
 
 }
