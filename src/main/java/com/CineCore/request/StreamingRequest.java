@@ -1,4 +1,4 @@
 package com.CineCore.request;
 
-public record StreamingRequest() {
+public record StreamingRequest(String name) {
 }

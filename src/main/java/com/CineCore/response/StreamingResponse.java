@@ -1,4 +1,8 @@
 package com.CineCore.response;
 
-public record StreamingResponse() {
+import lombok.Builder;
+
+@Builder
+public record StreamingResponse(Long id, String name) {
+
 }
