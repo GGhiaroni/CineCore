@@ -42,9 +42,9 @@ public class CategoryController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getCategoryById(@PathVariable Long id) {
-        Optional<Category> categoryFounded = categoryService.getCategoryById(id);
-        if (categoryFounded.isPresent()) {
-            return ResponseEntity.ok(CategoryMapper.toCategoryResponse(categoryFounded.get()));
+        Optional<Category> categoryFound = categoryService.getCategoryById(id);
+        if (categoryFound.isPresent()) {
+            return ResponseEntity.ok(CategoryMapper.toCategoryResponse(categoryFound.get()));
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Não foi possível "
         + "localizar uma categoria de id " + id + ".");
