@@ -50,6 +50,13 @@ public class CategoryController {
         + "localizar uma categoria de id " + id + ".");
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateCategory(@PathVariable Long id, @RequestBody CategoryRequest categoryRequest){
+        return categoryService.updateCategory(id, CategoryMapper.toCategory(categoryRequest))
+                .map(category -> ResponseEntity.ok(CategoryMapper.toCategoryResponse(category)))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteCategoryById(@PathVariable Long id) {
         Optional<Category> category = categoryService.getCategoryById(id);
