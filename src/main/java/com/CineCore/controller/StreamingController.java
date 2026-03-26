@@ -54,6 +54,13 @@ public class StreamingController {
                 + "localizar um streaming de id " + id + ".");
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateStreaming(@PathVariable Long id, @RequestBody StreamingRequest streaming){
+        return streamingService.updateStreaming(id, StreamingMapper.toStreaming(streaming))
+                .map(streamingUpdated -> ResponseEntity.ok(StreamingMapper.toStreamingResponse(streamingUpdated)))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteStreamingById(@PathVariable Long id) {
         Optional<Streaming> streaming = streamingService.getStreamingById(id);
