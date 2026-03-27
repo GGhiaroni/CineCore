@@ -74,9 +74,9 @@ public class MovieController {
     }
 
     @GetMapping("/latest")
-    public ResponseEntity<List<MovieResponse>> getLatestMovies(){
+    public ResponseEntity<List<MovieResponse>> getLatestMovies(@RequestParam (defaultValue = "50") int limit){
         return ResponseEntity.ok(
-                movieService.getMoviesByReleaseDateDesc()
+                movieService.getLatestMovies(limit)
                         .stream()
                         .map(MovieMapper::toMovieResponse)
                         .toList()

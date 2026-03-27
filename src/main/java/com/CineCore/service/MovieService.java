@@ -5,6 +5,7 @@ import com.CineCore.entity.Movie;
 import com.CineCore.entity.Streaming;
 import com.CineCore.repository.MovieRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import javax.swing.text.html.Option;
@@ -83,7 +84,7 @@ public class MovieService {
         return movieRepository.findByCategoriesId(categoryId);
     }
 
-    public List<Movie> getMoviesByReleaseDateDesc(){
-        return movieRepository.findAllByOrderByReleaseDateDesc();
+    public List<Movie> getLatestMovies(int limit){
+        return movieRepository.findAllByOrderByReleaseDateDesc(PageRequest.of(0, limit));
     }
 }
