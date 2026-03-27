@@ -1,4 +1,4 @@
 package com.CineCore.request;
 
-public record UserRequest() {
+public record UserRequest(String name, String email, String password) {
 }

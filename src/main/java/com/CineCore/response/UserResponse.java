@@ -1,4 +1,7 @@
 package com.CineCore.response;
 
-public record UserResponse() {
+import lombok.Builder;
+
+@Builder
+public record UserResponse(Long id, String name, String email) {
 }
