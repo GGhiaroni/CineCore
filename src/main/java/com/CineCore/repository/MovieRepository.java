@@ -9,5 +9,8 @@ import java.util.List;
 
 public interface MovieRepository extends JpaRepository<Movie, Long> {
     List<Movie> findByCategoriesId(Long categoryId);
+
     List<Movie> findAllByOrderByReleaseDateDesc(Pageable pageable);
+
+    List<Movie> findAllByOrderByRatingDesc(Pageable pageable);
 }

@@ -82,4 +82,14 @@ public class MovieController {
                         .toList()
         );
     }
+
+    @GetMapping("/top-rated")
+        public ResponseEntity<List<MovieResponse>> getTopRatedMovies(@RequestParam(defaultValue = "5") int limit){
+            return ResponseEntity.ok(
+                    movieService.getTopRatedMovies(limit)
+                            .stream()
+                            .map(MovieMapper::toMovieResponse)
+                            .toList()
+            );
+    }
 }

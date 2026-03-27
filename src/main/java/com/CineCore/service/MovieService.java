@@ -87,4 +87,8 @@ public class MovieService {
     public List<Movie> getLatestMovies(int limit){
         return movieRepository.findAllByOrderByReleaseDateDesc(PageRequest.of(0, limit));
     }
+
+    public List<Movie> getTopRatedMovies(int limit){
+        return movieRepository.findAllByOrderByRatingDesc(PageRequest.of(0, limit));
+    }
 }
