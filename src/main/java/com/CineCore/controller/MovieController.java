@@ -67,4 +67,19 @@ public class MovieController {
         }
         return ResponseEntity.notFound().build();
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<MovieResponse>> findByCategory(@RequestParam Long categoryId){
+        return ResponseEntity.ok(movieService.findByCategory(categoryId).stream().map(MovieMapper::toMovieResponse).toList());
+    }
+
+    @GetMapping("/latest")
+    public ResponseEntity<List<MovieResponse>> getLatestMovies(){
+        return ResponseEntity.ok(
+                movieService.getMoviesByReleaseDateDesc()
+                        .stream()
+                        .map(MovieMapper::toMovieResponse)
+                        .toList()
+        );
+    }
 }

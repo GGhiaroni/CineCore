@@ -78,4 +78,12 @@ public class MovieService {
     public void deleteMovie(Long id){
         movieRepository.deleteById(id);
     }
+
+    public List<Movie> findByCategory(Long categoryId){
+        return movieRepository.findByCategoriesId(categoryId);
+    }
+
+    public List<Movie> getMoviesByReleaseDateDesc(){
+        return movieRepository.findAllByOrderByReleaseDateDesc();
+    }
 }
