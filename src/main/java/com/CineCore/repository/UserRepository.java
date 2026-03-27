@@ -1,4 +1,7 @@
 package com.CineCore.repository;
 
-public class UserRepository {
+import com.CineCore.entity.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface UserRepository extends JpaRepository<User, Long> {
 }
