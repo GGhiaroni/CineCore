@@ -5,6 +5,7 @@ import com.CineCore.mapper.CategoryMapper;
 import com.CineCore.request.CategoryRequest;
 import com.CineCore.response.CategoryResponse;
 import com.CineCore.service.CategoryService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +33,7 @@ public class CategoryController {
     }
 
     @PostMapping
-    public ResponseEntity<CategoryResponse> saveCategory(@RequestBody CategoryRequest category) {
+    public ResponseEntity<CategoryResponse> saveCategory(@Valid @RequestBody CategoryRequest category) {
         Category categoryMapped = CategoryMapper.toCategory(category);
         Category categorySaved = categoryService.saveCategory(categoryMapped);
         return ResponseEntity.status(HttpStatus.CREATED).body(
@@ -51,7 +52,7 @@ public class CategoryController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateCategory(@PathVariable Long id, @RequestBody CategoryRequest categoryRequest){
+    public ResponseEntity<?> updateCategory(@PathVariable Long id, @Valid @RequestBody CategoryRequest categoryRequest){
         return categoryService.updateCategory(id, CategoryMapper.toCategory(categoryRequest))
                 .map(category -> ResponseEntity.ok(CategoryMapper.toCategoryResponse(category)))
                 .orElse(ResponseEntity.notFound().build());

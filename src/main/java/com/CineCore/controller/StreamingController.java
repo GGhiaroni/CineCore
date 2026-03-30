@@ -9,6 +9,7 @@ import com.CineCore.request.StreamingRequest;
 import com.CineCore.response.CategoryResponse;
 import com.CineCore.response.StreamingResponse;
 import com.CineCore.service.StreamingService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +37,7 @@ public class StreamingController {
     }
 
     @PostMapping
-    public ResponseEntity<StreamingResponse> saveStreaming(@RequestBody StreamingRequest streaming) {
+    public ResponseEntity<StreamingResponse> saveStreaming(@Valid @RequestBody StreamingRequest streaming) {
         Streaming streamingMapped = StreamingMapper.toStreaming(streaming);
         Streaming streamingSaved = streamingService.saveStreaming(streamingMapped);
         return ResponseEntity.status(HttpStatus.CREATED).body(
@@ -55,7 +56,7 @@ public class StreamingController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateStreaming(@PathVariable Long id, @RequestBody StreamingRequest streaming){
+    public ResponseEntity<?> updateStreaming(@PathVariable Long id, @Valid @RequestBody StreamingRequest streaming){
         return streamingService.updateStreaming(id, StreamingMapper.toStreaming(streaming))
                 .map(streamingUpdated -> ResponseEntity.ok(StreamingMapper.toStreamingResponse(streamingUpdated)))
                 .orElse(ResponseEntity.notFound().build());

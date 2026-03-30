@@ -9,6 +9,7 @@ import com.CineCore.request.MovieRequest;
 import com.CineCore.response.CategoryResponse;
 import com.CineCore.response.MovieResponse;
 import com.CineCore.service.MovieService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,7 +45,7 @@ public class MovieController {
     }
 
     @PostMapping
-    public ResponseEntity<MovieResponse> saveMovie(@RequestBody MovieRequest movieRequest) {
+    public ResponseEntity<MovieResponse> saveMovie(@Valid @RequestBody MovieRequest movieRequest) {
         Movie movieSaved = movieService.saveMovie(MovieMapper.toMovie(movieRequest));
         return ResponseEntity.status(HttpStatus.CREATED).body(
                 MovieMapper.toMovieResponse(movieSaved)
@@ -52,7 +53,7 @@ public class MovieController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<MovieResponse> updateMovie(@PathVariable Long id, @RequestBody MovieRequest movieRequest) {
+    public ResponseEntity<MovieResponse> updateMovie(@PathVariable Long id, @Valid @RequestBody MovieRequest movieRequest) {
         return movieService.updateMovie(id, MovieMapper.toMovie(movieRequest))
                 .map(movie -> ResponseEntity.ok(MovieMapper.toMovieResponse(movie)))
                 .orElse(ResponseEntity.notFound().build());
