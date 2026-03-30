@@ -2,6 +2,7 @@ package com.CineCore.controller;
 
 import com.CineCore.config.TokenService;
 import com.CineCore.entity.User;
+import com.CineCore.exception.UsernameOrPasswordInvalidException;
 import com.CineCore.mapper.UserMapper;
 import com.CineCore.request.LoginRequest;
 import com.CineCore.request.UserRequest;
@@ -12,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,25 +30,29 @@ public class AuthController {
     private final TokenService tokenService;
 
     @PostMapping("/register")
-    public ResponseEntity<UserResponse> registerUser(@RequestBody UserRequest userRequest){
+    public ResponseEntity<UserResponse> registerUser(@RequestBody UserRequest userRequest) {
         User savedUser = userService.saveUser(UserMapper.toUser(userRequest));
         return ResponseEntity.status(HttpStatus.CREATED).body(UserMapper.toUserResponse(savedUser));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest){
-        UsernamePasswordAuthenticationToken userAndPassword = new UsernamePasswordAuthenticationToken(
-                loginRequest.email(),
-                loginRequest.password()
-        );
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
+        try {
 
-        Authentication authenticate = authenticationManager.authenticate(userAndPassword);
+            UsernamePasswordAuthenticationToken userAndPassword = new UsernamePasswordAuthenticationToken(
+                    loginRequest.email(),
+                    loginRequest.password()
+            );
 
-        User user = (User) authenticate.getPrincipal();
+            Authentication authenticate = authenticationManager.authenticate(userAndPassword);
 
-        String token = tokenService.generateToken(user);
+            User user = (User) authenticate.getPrincipal();
 
-        return ResponseEntity.ok(new LoginResponse(token));
+            String token = tokenService.generateToken(user);
+
+            return ResponseEntity.ok(new LoginResponse(token));
+        } catch (BadCredentialsException e) {
+            throw new UsernameOrPasswordInvalidException("Usuário ou senha inválidos.");
+        }
     }
-
 }
