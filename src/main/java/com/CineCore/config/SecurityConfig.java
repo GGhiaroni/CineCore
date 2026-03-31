@@ -31,6 +31,9 @@ public class SecurityConfig {
                         .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
                         .requestMatchers(HttpMethod.POST, "/cinecore/auth/register").permitAll()
                         .requestMatchers(HttpMethod.POST, "/cinecore/auth/login").permitAll()
+                        .requestMatchers("/api/api-docs/**").permitAll()
+                        .requestMatchers("/swagger.html").permitAll()
+                        .requestMatchers("/swagger-ui/**").permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
