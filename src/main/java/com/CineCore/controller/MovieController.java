@@ -9,6 +9,7 @@ import com.CineCore.request.MovieRequest;
 import com.CineCore.response.CategoryResponse;
 import com.CineCore.response.MovieResponse;
 import com.CineCore.service.MovieService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/cinecore/movie")
 @RequiredArgsConstructor
+@Tag(name="Movie", description = "Recurso responsável pelo gerenciamento dos filmes.")
 public class MovieController {
     private final MovieService movieService;
 

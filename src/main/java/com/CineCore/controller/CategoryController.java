@@ -5,6 +5,7 @@ import com.CineCore.mapper.CategoryMapper;
 import com.CineCore.request.CategoryRequest;
 import com.CineCore.response.CategoryResponse;
 import com.CineCore.service.CategoryService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/cinecore/category")
 @RequiredArgsConstructor
+@Tag(name="Category", description = "Recurso responsável pelo gerenciamento das categorias.")
 public class CategoryController {
     private final CategoryService categoryService;
 

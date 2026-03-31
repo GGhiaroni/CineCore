@@ -9,6 +9,7 @@ import com.CineCore.request.UserRequest;
 import com.CineCore.response.LoginResponse;
 import com.CineCore.response.UserResponse;
 import com.CineCore.service.UserService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/cinecore/auth")
 @RequiredArgsConstructor
+@Tag(name="Autenticação", description = "Recurso responsável pelo gerenciamento do cadastro e login de usuários.")
 public class AuthController {
     private final UserService userService;
     private final AuthenticationManager authenticationManager;

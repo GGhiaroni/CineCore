@@ -9,6 +9,7 @@ import com.CineCore.request.StreamingRequest;
 import com.CineCore.response.CategoryResponse;
 import com.CineCore.response.StreamingResponse;
 import com.CineCore.service.StreamingService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/cinecore/streaming")
 @RequiredArgsConstructor
+@Tag(name="Streaming", description = "Recurso responsável pelo gerenciamento dos streamings.")
 public class StreamingController {
     private final StreamingService streamingService;
 
