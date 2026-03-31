@@ -9,6 +9,9 @@ import com.CineCore.request.StreamingRequest;
 import com.CineCore.response.CategoryResponse;
 import com.CineCore.response.StreamingResponse;
 import com.CineCore.service.StreamingService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +29,12 @@ import java.util.Optional;
 public class StreamingController {
     private final StreamingService streamingService;
 
+    @Operation(summary = "Lista todos os streamings cadastrados", description = "Rota lista todos os streamings cadastrados.")
+    @ApiResponses(value={
+            @ApiResponse(responseCode = "200", description = "Streamings encontrados com sucesso."),
+            @ApiResponse(responseCode = "404", description = "Streamings não encontrados."),
+            @ApiResponse(responseCode = "403", description = "Usuário não autenticado.")
+    })
     @GetMapping
     public ResponseEntity<?> getAllStreamings() {
         List<Streaming> streamings = streamingService.getAllStreamings();
@@ -38,6 +47,12 @@ public class StreamingController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Nenhum streaming foi encontrado.");
     }
 
+    @Operation(summary = "Cria um novo streaming", description = "Rota cria um novo streaming no banco de dados.")
+    @ApiResponses(value={
+            @ApiResponse(responseCode = "201", description = "Streaming criado com sucesso."),
+            @ApiResponse(responseCode = "400", description = "Erro na criação do streaming."),
+            @ApiResponse(responseCode = "403", description = "Usuário não autenticado.")
+    })
     @PostMapping
     public ResponseEntity<StreamingResponse> saveStreaming(@Valid @RequestBody StreamingRequest streaming) {
         Streaming streamingMapped = StreamingMapper.toStreaming(streaming);
@@ -47,6 +62,12 @@ public class StreamingController {
         );
     }
 
+    @Operation(summary = "Lista o streaming por ID", description = "Rota lista o streaming pelo ID fornecido pelo usuário.")
+    @ApiResponses(value={
+            @ApiResponse(responseCode = "200", description = "Streaming encontrado com sucesso."),
+            @ApiResponse(responseCode = "404", description = "Streaming não encontrado."),
+            @ApiResponse(responseCode = "403", description = "Usuário não autenticado.")
+    })
     @GetMapping("/{id}")
     public ResponseEntity<?> getStreamingById(@PathVariable Long id) {
         Optional<Streaming>  streamingFound = streamingService.getStreamingById(id);
@@ -57,6 +78,12 @@ public class StreamingController {
                 + "localizar um streaming de id " + id + ".");
     }
 
+    @Operation(summary = "Altera o streaming por ID.", description = "Rota altera o streaming pelo ID fornecido pelo usuário.")
+    @ApiResponses(value={
+            @ApiResponse(responseCode = "200", description = "Streaming alterado com sucesso."),
+            @ApiResponse(responseCode = "404", description = "Streaming não encontrado."),
+            @ApiResponse(responseCode = "403", description = "Usuário não autenticado.")
+    })
     @PutMapping("/{id}")
     public ResponseEntity<?> updateStreaming(@PathVariable Long id, @Valid @RequestBody StreamingRequest streaming){
         return streamingService.updateStreaming(id, StreamingMapper.toStreaming(streaming))
@@ -64,6 +91,12 @@ public class StreamingController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @Operation(summary = "Deleta o streaming por ID.", description = "Rota deleta o streaming pelo ID fornecido pelo usuário.")
+    @ApiResponses(value={
+            @ApiResponse(responseCode = "200", description = "Streaming deletado com sucesso."),
+            @ApiResponse(responseCode = "404", description = "Streaming não encontrado."),
+            @ApiResponse(responseCode = "403", description = "Usuário não autenticado.")
+    })
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteStreamingById(@PathVariable Long id) {
         Optional<Streaming> streaming = streamingService.getStreamingById(id);
